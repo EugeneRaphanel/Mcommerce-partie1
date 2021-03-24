@@ -17,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-
+import java.util.ArrayList;
 
 @Api( description="API pour es opérations CRUD sur les produits.")
 
@@ -96,6 +96,19 @@ public class ProductController {
     }
 
 
+	//Calculer la marge
+	public ArrayList calculerMargeProduit() {
+		Iterable<Product> produits = productDao.findAll();
+	
+		ArrayList<Integer> res = new ArrayList<Integer>();
+		produits.forEach(
+			(element) -> {res.add(element.getPrix() - element.getPrixAchat() );} );
+	
+		return res;
+	}
+	
+	//Classer les produits par ordre alphabétique
+	
     //Pour les tests
     @GetMapping(value = "test/produits/{prix}")
     public List<Product>  testeDeRequetes(@PathVariable int prix) {
