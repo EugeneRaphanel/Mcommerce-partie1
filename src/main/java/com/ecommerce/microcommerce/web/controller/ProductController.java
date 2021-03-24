@@ -17,7 +17,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
 import java.util.ArrayList;
+import com.ecommerce.microcommerce.web.controller.ProductComparator;
+import java.util.Collections;
 
 @Api( description="API pour es opérations CRUD sur les produits.")
 
@@ -108,6 +111,13 @@ public class ProductController {
 	}
 	
 	//Classer les produits par ordre alphabétique
+	public Iterable<Product> trierProduitsParOrdreAlphabetique(){
+		List<Product> produits = productDao.findAll();
+
+		Collections.sort(produits,new ProductComparator());
+		return produits;
+	}
+	
 	
     //Pour les tests
     @GetMapping(value = "test/produits/{prix}")
