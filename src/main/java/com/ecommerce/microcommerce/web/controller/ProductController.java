@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ArrayList;
 import com.ecommerce.microcommerce.web.controller.ProductComparator;
 import java.util.Collections;
-
+import java.util.*;
 @Api( description="API pour es opérations CRUD sur les produits.")
 
 @RestController
@@ -74,7 +74,7 @@ public class ProductController {
 
         Product productAdded =  productDao.save(product);
 
-        if (productAdded == null)
+        if (productAdded == null )
             return ResponseEntity.noContent().build();
 
         URI location = ServletUriComponentsBuilder
@@ -100,14 +100,16 @@ public class ProductController {
 
 
 	//Calculer la marge
-	public ArrayList calculerMargeProduit() {
+	 @RequestMapping(value = "/AdminProduits", method = RequestMethod.GET)
+	public HashMap<String, Integer> calculerMargeProduit() {
 		Iterable<Product> produits = productDao.findAll();
 	
-		ArrayList<Integer> res = new ArrayList<Integer>();
+		HashMap<String, Integer> res_marge = new HashMap<String, Integer>();
 		produits.forEach(
-			(element) -> {res.add(element.getPrix() - element.getPrixAchat() );} );
-	
-		return res;
+			(element) -> {
+			res_marge.put( element.toString(), element.getPrix() - element.getPrixAchat()) ;
+			} );
+		return res_marge;
 	}
 	
 	//Classer les produits par ordre alphabétique
